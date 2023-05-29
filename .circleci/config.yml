@@ -1,0 +1,31 @@
+version: 2.1
+jobs:
+  build:
+    working_directory: ~/motor-console
+    docker:
+      - image: circleci/node:16
+    steps:
+      - checkout
+      - run:
+          name: Update NPM
+          command: "sudo npm install -g npm"
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Install dpkg and fakeroot
+          command: |
+            sudo apt-get update -y
+            sudo apt-get install -y dpkg fakeroot
+            sudo apt-get install libc6-dev-armhf-cross linux-libc-dev-armhf-cross g++-arm-linux-gnueabihf
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Generate Builds
+          command: npm run make -- --arch=armv7l --targets=@electron-forge/maker-deb
+      - store_artifacts:
+          path: ~/motor-console/out/make
