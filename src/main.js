@@ -5,7 +5,7 @@ const unhandled = require('electron-unhandled');
 const { channels } = require('../src/shared/constants');
 //const step = require("./shared/runMotor");
 const { PythonShell } = require('python-shell');
-const { runPy } = require('./motorFcn');
+const runPy = require('./motorFcn');
 
 unhandled();
 

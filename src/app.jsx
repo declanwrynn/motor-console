@@ -85,7 +85,7 @@ const Console = () => {
                 <button 
                     className='goButton'
                     onClick={async () => {
-                        const result = await window.api.testApi({ length: displayLengthValue, number: displayNumberValue });
+                        const result = await window.api.stepApi({ length: displayLengthValue, number: displayNumberValue });
                         console.log(result);
                         setBtnText(result.btnText);
                     }}
